@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,6 +10,7 @@ import { IamModule } from './iam/iam.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     CoffeesModule,
     UsersModule,
     TypeOrmModule.forRoot({
