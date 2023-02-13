@@ -6,7 +6,6 @@ import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { UsersModule } from './users/users.module';
 import { IamModule } from './iam/iam.module';
-import { HashingService } from './aim/hashing/hashing.service';
 
 @Module({
   imports: [
@@ -25,6 +24,6 @@ import { HashingService } from './aim/hashing/hashing.service';
     IamModule,
   ],
   controllers: [AppController],
-  providers: [AppService, HashingService],
+  providers: [AppService],
 })
 export class AppModule {}
