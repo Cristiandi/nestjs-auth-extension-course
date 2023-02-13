@@ -5,6 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { UsersModule } from './users/users.module';
+import { IamModule } from './iam/iam.module';
+import { HashingService } from './aim/hashing/hashing.service';
 
 @Module({
   imports: [
@@ -20,8 +22,9 @@ import { UsersModule } from './users/users.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    IamModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, HashingService],
 })
 export class AppModule {}
