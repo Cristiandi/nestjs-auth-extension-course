@@ -7,7 +7,8 @@ import { APP_GUARD } from '@nestjs/core';
 import jwtConfig from './config/jwt.config';
 import { User } from '../users/entities/user.entity';
 
-import { AccessTokenGuard } from './authentication/guards/access-token/access-token.guard';
+import { AuthenticationGuard } from './authentication/guards/authentication.guard';
+import { AccessTokenGuard } from './authentication/guards/access-token.guard';
 
 import { HashingService } from './hashing/hashing.service';
 import { BcryptService } from './hashing/bcrypt.service';
@@ -30,8 +31,9 @@ import { AuthenticationController } from './authentication/authentication.contro
     // using the @UseGuards decorator
     {
       provide: APP_GUARD,
-      useClass: AccessTokenGuard,
+      useClass: AuthenticationGuard,
     },
+    AccessTokenGuard,
     AuthenticationService,
   ],
   controllers: [AuthenticationController],
