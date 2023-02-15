@@ -1,3 +1,6 @@
-# JWT (JSON Web Token)
+# NestJS - Authentication and Authorization
+## JWT (JSON Web Token)
 Are an open starndard used to share security information between two parties. A client and a server. Each JWT contains encoded JSON objects, including a set of claims, JWTs are signed using a cryptographic algorithm to ensure that claims cannot by altered after the token has been issued. JWTs can be signed using a secret with the HMAC algorithm or a public/private key using RSA or ECDSA. 
 JWTs consist of three parts, separated by dots (.), which are: Header, Payload, Signature.
+##
+A refresh token is special token used to obtain new access tokens. this allow us to have short lived access tokens without forcing users to manually login every time the token expires. Once the access token expires, client aplications can use a refresh token to "refresh", aka "regenerate" or "retrive" a new access token behind the scenes. refresh token should returned alongside the access token and or ID token as part of the user's intial authentication and authorization flow. After that applications must then securely store the refresh tokens. You can think of a refresh token as if it were a user's credentials set. As is does let them re authenticate.

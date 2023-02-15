@@ -19,6 +19,7 @@ import { HashingService } from '../hashing/hashing.service';
 
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
+import { RefreshTokenDto } from './dto/refresh-toke.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -69,21 +70,59 @@ export class AuthenticationService {
       throw new UnauthorizedException('password is incorrect');
     }
 
-    const accessToken = await this.jwtService.signAsync(
+    return await this.generateTokens(existingUser);
+  }
+
+  public async generateTokens(user: User) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signToken<Partial<ActiveUserData>>(
+        user.id,
+        this.jwtConfiguration.accessTokenTtl,
+        { email: user.email },
+      ),
+      this.signToken(user.id, this.jwtConfiguration.refreshTokenTtl),
+    ]);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  public async refreshTokens(input: RefreshTokenDto) {
+    const { refreshToken } = input;
+
+    try {
+      const { sub } = await this.jwtService.verifyAsync<
+        Pick<ActiveUserData, 'sub'>
+      >(refreshToken, {
+        secret: this.jwtConfiguration.secret,
+        audience: this.jwtConfiguration.audience,
+        issuer: this.jwtConfiguration.issuer,
+      });
+
+      const existingUser = await this.userRepository.findOneByOrFail({
+        id: sub,
+      });
+
+      return this.generateTokens(existingUser);
+    } catch (error) {
+      throw new UnauthorizedException(error);
+    }
+  }
+
+  private async signToken<T>(userId: number, expiresIn: number, payload?: T) {
+    return await this.jwtService.signAsync(
       {
-        sub: existingUser.id,
-        email: existingUser.email,
-      } as ActiveUserData,
+        sub: userId,
+        ...payload,
+      },
       {
         audience: this.jwtConfiguration.audience,
         issuer: this.jwtConfiguration.issuer,
         secret: this.jwtConfiguration.secret,
-        expiresIn: this.jwtConfiguration.accessTokenTtl,
+        expiresIn: expiresIn,
       },
     );
-
-    return {
-      accessToken,
-    };
   }
 }

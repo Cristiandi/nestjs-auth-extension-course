@@ -15,6 +15,7 @@ import { AuthenticationService } from './authentication.service';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { AuthType } from './enums/auth-type-enum';
+import { RefreshTokenDto } from './dto/refresh-toke.dto';
 
 @Auth(AuthType.None)
 @Controller('authentication')
@@ -48,4 +49,10 @@ export class AuthenticationController {
     });
   }
   */
+
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh-tokens')
+  refreshTokens(@Body() input: RefreshTokenDto) {
+    return this.authenticationService.refreshTokens(input);
+  }
 }
