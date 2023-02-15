@@ -13,6 +13,8 @@ import jwtConfig from '../config/jwt.config';
 
 import { User } from '../../users/entities/user.entity';
 
+import { ActiveUserData } from '../interfaces/active-user-data.interface';
+
 import { HashingService } from '../hashing/hashing.service';
 
 import { SignUpDto } from './dto/sign-up.dto';
@@ -71,7 +73,7 @@ export class AuthenticationService {
       {
         sub: existingUser.id,
         email: existingUser.email,
-      },
+      } as ActiveUserData,
       {
         audience: this.jwtConfiguration.audience,
         issuer: this.jwtConfiguration.issuer,
