@@ -9,6 +9,7 @@ import { User } from '../users/entities/user.entity';
 
 import { AuthenticationGuard } from './authentication/guards/authentication.guard';
 import { AccessTokenGuard } from './authentication/guards/access-token.guard';
+import { RolesGuard } from './authorization/guards/roles.guard';
 
 import { HashingService } from './hashing/hashing.service';
 import { BcryptService } from './hashing/bcrypt.service';
@@ -34,6 +35,10 @@ import { AuthenticationController } from './authentication/authentication.contro
     {
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
     AccessTokenGuard,
     RefreshTokenIdsStorage,

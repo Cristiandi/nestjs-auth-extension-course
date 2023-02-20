@@ -7,3 +7,5 @@ A refresh token is special token used to obtain new access tokens. this allow us
 ## Refresh token rotation
 Whenever a refresh token was used to issue a new pair of tokens, we'll invalidate the original one (or old refresh token) so it can't be used again in the future. To do all of this, we're going to add a Redis database to our stack.
 ## Automatic reuse detection
+This is a security feature that prevents a refresh token from being used more than once. This is done by storing a record of the refresh token in the database. When a refresh token is used to issue a new pair of tokens, we'll invalidate the original one (or old refresh token) so it can't be used again in the future. To do all of this, we're going to add a Redis database to our stack.
+
