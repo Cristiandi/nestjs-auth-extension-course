@@ -8,3 +8,8 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: toor
+  redis:
+    image: redis
+    restart: 'no'
+    ports:
+      - '6379:6379'

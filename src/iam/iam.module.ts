@@ -14,6 +14,8 @@ import { HashingService } from './hashing/hashing.service';
 import { BcryptService } from './hashing/bcrypt.service';
 import { AuthenticationService } from './authentication/authentication.service';
 
+import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage';
+
 import { AuthenticationController } from './authentication/authentication.controller';
 
 @Module({
@@ -34,6 +36,7 @@ import { AuthenticationController } from './authentication/authentication.contro
       useClass: AuthenticationGuard,
     },
     AccessTokenGuard,
+    RefreshTokenIdsStorage,
     AuthenticationService,
   ],
   controllers: [AuthenticationController],
