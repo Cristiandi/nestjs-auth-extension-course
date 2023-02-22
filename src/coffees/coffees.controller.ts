@@ -10,10 +10,13 @@ import {
 
 import { ActiveUser } from '../iam/decorators/active-user.decorator';
 import { Roles } from '../iam/authorization/decorators/roles.decorator';
+import { Permissions } from '../iam/authorization/decorators/permissions.decorator';
 
 import { ActiveUserData } from '../iam/interfaces/active-user-data.interface';
 
 import { Role } from '../users/enums/role.enum';
+
+import { Permission } from '../iam/authorization/permission.type';
 
 import { CoffeesService } from './coffees.service';
 
@@ -24,7 +27,8 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
-  @Roles(Role.Admin)
+  // @Roles(Role.Admin)
+  @Permissions(Permission.CreateCoffee)
   @Post()
   create(@Body() createCoffeeDto: CreateCoffeeDto) {
     return this.coffeesService.create(createCoffeeDto);
