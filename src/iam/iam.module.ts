@@ -5,7 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 
 import jwtConfig from './config/jwt.config';
+
 import { User } from '../users/entities/user.entity';
+import { ApiKey } from '../users/api-keys/entities/api-key.entity';
 
 import { AuthenticationGuard } from './authentication/guards/authentication.guard';
 import { AccessTokenGuard } from './authentication/guards/access-token.guard';
@@ -22,11 +24,13 @@ import { FrameworkContributorPolicyHandler } from './authorization/policies/fram
 import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage';
 
 import { AuthenticationController } from './authentication/authentication.controller';
+import { ApiKeyService } from './authentication/api-keys.service';
+import { ApiKeyGuard } from './authentication/guards/api-key.guard';
 
 @Module({
   imports: [
     ConfigModule.forFeature(jwtConfig),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, ApiKey]),
     JwtModule.registerAsync(jwtConfig.asProvider()),
   ],
   providers: [
@@ -45,10 +49,12 @@ import { AuthenticationController } from './authentication/authentication.contro
       useClass: PoliciesGuard, // RolesGuard
     },
     AccessTokenGuard,
+    ApiKeyGuard,
     RefreshTokenIdsStorage,
     AuthenticationService,
     PolicyHandlersStorage,
     FrameworkContributorPolicyHandler,
+    ApiKeyService,
   ],
   controllers: [AuthenticationController],
 })

@@ -12,6 +12,7 @@ import { ActiveUser } from '../iam/decorators/active-user.decorator';
 import { Roles } from '../iam/authorization/decorators/roles.decorator';
 import { Permissions } from '../iam/authorization/decorators/permissions.decorator';
 import { Policies } from '../iam/authorization/decorators/policies.decorator';
+import { Auth } from '../iam/authentication/decorators/auth.decorator';
 
 import { ActiveUserData } from '../iam/interfaces/active-user-data.interface';
 
@@ -25,7 +26,9 @@ import { CoffeesService } from './coffees.service';
 
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
+import { AuthType } from 'src/iam/authentication/enums/auth-type-enum';
 
+@Auth(AuthType.Bearer, AuthType.ApiKey)
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}

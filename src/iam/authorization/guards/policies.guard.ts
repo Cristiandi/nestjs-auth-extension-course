@@ -45,6 +45,7 @@ export class PoliciesGuard implements CanActivate {
     ).catch((err) => {
       throw new ForbiddenException(err.message);
     });
+
     return true;
   }
 }
