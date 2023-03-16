@@ -9,6 +9,8 @@ async function bootstrap() {
   // but it can also be used on a per-controller basis
   app.useGlobalPipes(new ValidationPipe());
 
+  app.enableCors();
+
   await app.listen(3000);
 }
 bootstrap();
