@@ -17,6 +17,7 @@ import { User } from '../../users/entities/user.entity';
 import { ActiveUserData } from '../interfaces/active-user-data.interface';
 
 import { HashingService } from '../hashing/hashing.service';
+import { OtpAuthenticationService } from './otp-authentication.service';
 
 import { RefreshTokenIdsStorage } from './refresh-token-ids.storage';
 
@@ -34,6 +35,7 @@ export class AuthenticationService {
     private readonly hashingService: HashingService,
     private readonly jwtService: JwtService,
     private readonly refreshTokenIdsStorage: RefreshTokenIdsStorage,
+    private readonly otpAuthenticationService: OtpAuthenticationService,
   ) {}
 
   public async signUp(input: SignUpDto) {
@@ -72,6 +74,21 @@ export class AuthenticationService {
 
     if (!isEqual) {
       throw new UnauthorizedException('password is incorrect');
+    }
+    if (existingUser.isTfaEnabled) {
+      console.log('existingUser.tfaSecret', existingUser.tfaSecret);
+      console.log('input.tfaCode', input.tfaCode);
+
+      const isValid = this.otpAuthenticationService.verifyCode(
+        input.tfaCode,
+        existingUser.tfaSecret,
+      );
+
+      if (!isValid) {
+        throw new UnauthorizedException(
+          'invalid two-factor authentication code',
+        );
+      }
     }
 
     return await this.generateTokens(existingUser);
