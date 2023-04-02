@@ -28,6 +28,8 @@ export class AuthenticationGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('AuthenticationGuard.canActivate()');
+
     // getting the auth types from the decorator
     // if no auth types are provided, we default to Bearer
     const authTypes = this.reflector.getAllAndOverride<AuthType[]>(
